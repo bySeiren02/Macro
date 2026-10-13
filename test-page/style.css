@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #0f172a;
+  color: #fff;
+}
+
+.clock {
+  font-variant-numeric: tabular-nums;
+}
+
+.game,
+.controls {
+  max-width: 640px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.meta {
+  color: #6b7280;
+}
+
+.notice {
+  font-weight: 600;
+}
+
+.booking-area {
+  min-height: 80px;
+}
+
+.book-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #dc2626;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.book-btn:disabled,
+.book-btn.is-disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.book-btn.is-disabled {
+  pointer-events: none;
+}
+
+.seats {
+  display: grid;
+  grid-template-columns: repeat(6, 40px);
+  gap: 6px;
+}
+
+.seat {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.hint {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* .book-btn의 display 지정이 hidden 속성을 덮어쓰지 않도록 */
+[hidden] {
+  display: none !important;
+}

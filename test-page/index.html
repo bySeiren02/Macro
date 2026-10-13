@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>테스트 야구 예매 페이지</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <strong>LOCAL TICKET</strong>
+      <span id="server-clock" class="clock" aria-label="현재 시각"></span>
+    </header>
+
+    <main class="game">
+      <h1>테스트 이글스 vs 테스트 타이거스</h1>
+      <p class="meta">2026-10-20 (화) 18:30 · 로컬 테스트 구장</p>
+      <p id="state-notice" class="notice"></p>
+      <!-- 확장 프로그램이 감지하는 영역. 상태에 따라 이 영역의 내용이 교체된다. -->
+      <section id="booking-area" class="booking-area" aria-live="polite"></section>
+    </main>
+
+    <!-- 테스트 컨트롤: 버튼 라벨에 감지 대상 문구가 포함되지 않도록 주의 -->
+    <aside class="controls" aria-label="테스트 상태 전환">
+      <h2>테스트 컨트롤</h2>
+      <div class="control-grid">
+        <button type="button" data-state="before-open">오픈 전 (숨김)</button>
+        <button type="button" data-state="disabled">비활성 (disabled)</button>
+        <button type="button" data-state="disabled-aria">비활성 (aria)</button>
+        <button type="button" data-state="enabled">활성 상태로</button>
+        <button type="button" data-state="removed">구조 변경 (요소 제거)</button>
+        <button type="button" data-state="renamed">문구 변경</button>
+      </div>
+      <p class="hint">
+        URL 파라미터: <code>?state=disabled&amp;openIn=10</code> (10초 뒤 자동 활성화)
+      </p>
+      <p>현재 상태: <code id="current-state">-</code></p>
+    </aside>
+
+    <script src="app.js"></script>
+  </body>
+</html>

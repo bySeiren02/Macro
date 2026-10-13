@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>티켓 오픈 알리미</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>티켓 오픈 알리미</h1>
+      <span id="status-badge" class="badge" data-tone="idle">대기</span>
+    </header>
+
+    <div id="alert" class="alert" role="alert" hidden></div>
+
+    <main>
+      <section class="card" aria-labelledby="schedule-title">
+        <h2 id="schedule-title">예매 일정 <small>KST 기준</small></h2>
+        <div class="row">
+          <input id="open-date" type="date" aria-label="오픈 날짜 (KST)" />
+          <input id="open-time" type="time" step="1" aria-label="오픈 시각 (KST)" />
+        </div>
+        <div class="row">
+          <button id="save-schedule" class="primary" type="button">일정 저장</button>
+          <button id="clear-schedule" type="button">일정 해제</button>
+        </div>
+        <p id="countdown" class="countdown" data-tone="idle">설정된 일정 없음</p>
+        <p id="open-at-label" class="muted"></p>
+      </section>
+
+      <section class="card" aria-labelledby="target-title">
+        <h2 id="target-title">예매 페이지</h2>
+        <input id="target-url" type="url" placeholder="https://..." autocomplete="off" spellcheck="false" aria-label="예매 페이지 URL" />
+        <div class="row">
+          <button id="save-target" class="primary" type="button">URL 저장</button>
+          <button id="open-target" type="button">페이지 열기</button>
+          <button id="grant-permission" type="button">권한 허용</button>
+        </div>
+        <dl class="kv">
+          <dt>제목</dt>
+          <dd id="tab-title">-</dd>
+          <dt>탭 상태</dt>
+          <dd id="tab-status">-</dd>
+          <dt>접근 권한</dt>
+          <dd id="permission-status">-</dd>
+        </dl>
+      </section>
+
+      <section class="card" aria-labelledby="detector-title">
+        <h2 id="detector-title">예매 버튼 감지</h2>
+        <div class="row">
+          <input id="button-text" type="text" maxlength="100" placeholder="예매하기" aria-label="감지할 버튼 텍스트" />
+          <select id="match-mode" aria-label="일치 방식">
+            <option value="contains">포함</option>
+            <option value="exact">정확히 일치</option>
+          </select>
+        </div>
+        <div class="row">
+          <button id="start-detection" class="primary" type="button">감지 시작</button>
+          <button id="pause-detection" type="button">일시정지</button>
+          <button id="stop-detection" class="danger" type="button">종료</button>
+        </div>
+        <dl class="kv">
+          <dt>감지 상태</dt>
+          <dd id="detection-status">-</dd>
+          <dt>버튼 상태</dt>
+          <dd id="button-state">-</dd>
+          <dt>일치 요소</dt>
+          <dd id="match-count">-</dd>
+          <dt>마지막 감지</dt>
+          <dd id="last-checked">-</dd>
+        </dl>
+        <p id="detection-warning" class="warning" hidden></p>
+      </section>
+
+      <section class="card" aria-labelledby="notify-title">
+        <h2 id="notify-title">알림 설정</h2>
+        <div class="checks">
+          <label><input id="pref-before5m" type="checkbox" /> 오픈 5분 전</label>
+          <label><input id="pref-before1m" type="checkbox" /> 오픈 1분 전</label>
+          <label><input id="pref-atOpen" type="checkbox" /> 오픈 시각</label>
+          <label><input id="pref-onEnabled" type="checkbox" /> 버튼 활성화</label>
+          <label><input id="pref-sound" type="checkbox" /> 소리</label>
+        </div>
+        <div class="row">
+          <button id="test-notification" type="button">테스트 알림</button>
+          <span id="notification-permission" class="muted"></span>
+        </div>
+        <details>
+          <summary>알림이 보이지 않나요?</summary>
+          <ul class="help">
+            <li>Chrome: 설정 &gt; 개인정보 보호 및 보안 &gt; 사이트 설정 &gt; 알림이 차단되어 있지 않은지 확인</li>
+            <li>macOS: 시스템 설정 &gt; 알림 &gt; Google Chrome &gt; 알림 허용, 스타일 "알림(Alerts)" 권장</li>
+            <li>Windows: 설정 &gt; 시스템 &gt; 알림 &gt; Google Chrome 켜기, 집중 모드 해제</li>
+            <li>방해 금지/집중 모드가 켜져 있으면 알림이 표시되지 않습니다. 소리 알림을 함께 켜 두세요.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="card" aria-labelledby="log-title">
+        <h2 id="log-title">최근 알림</h2>
+        <ol id="notification-log" class="log"></ol>
+      </section>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
