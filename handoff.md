@@ -9,6 +9,8 @@
 
 - 2026-10-13: `npm run dev:browser` 추가 (확장 로드된 Chromium 자동 실행, 프로필은 .dev-profile/)
 
+- 2026-10-13: 개발 하네스 구성 (CLAUDE.md, 불변식 검사, verify 단계, mv3-reviewer, verify/release 스킬, CI, .claude/settings.json 편집 후 검사 hook)
+
 # 알려진 이슈
 - 권한 요청 경로(chrome.permissions.request 대화상자)는 e2e에서 검증 불가 (dist-test가 로컬 권한을 미리 부여). 수동 확인 필요
 - 다른 출처 iframe / closed Shadow DOM 안의 버튼은 감지 불가 (README에 문서화)
@@ -17,6 +19,7 @@
 - 실제 OS 알림 표시/소리는 headless 테스트에서 검증하지 않음 (세션 알림 기록으로만 검증)
 
 # 다음 TODO
+- CI 첫 실행 결과 확인 (GitHub Actions)
 - 실제 Chrome에 dist 로드 후 수동 점검: 권한 대화상자, macOS 알림 표시, 알림음, 알림 클릭 이동
 - (선택) 클래스명 기반 비활성 판정 옵션 (예: 사용자 지정 disabled 클래스)
 - (선택) 오픈 시각에 감지 자동 시작 옵션

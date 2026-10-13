@@ -84,7 +84,10 @@
 npm install
 npx playwright install chromium   # 최초 1회 (e2e용)
 npm run build                     # dist/ 생성 -> Chrome에 로드
-npm test                          # 타입 체크 + 두 빌드 + unit/e2e 전체
+npm test                          # = npm run verify: 타입 + 불변식 + 두 빌드 + unit/e2e 전체
+npm run verify:quick              # e2e 제외 빠른 검증 (~10초)
+npm run check:invariants          # 정책/권한/금지 API 정적 검사
+npm run package                   # release/ticket-open-alert-<버전>.zip
 npm run test:unit                 # 빠른 단위 테스트
 npm run test:e2e                  # dist-test 빌드 후 e2e
 HEADED=1 npm run test:e2e         # 브라우저 창을 띄워 확인

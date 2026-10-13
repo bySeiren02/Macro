@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/harness/after-edit.mjs\"",
+            "timeout": 30,
+            "statusMessage": "타입/불변식 검사 중..."
+          }
+        ]
+      }
+    ]
+  }
+}

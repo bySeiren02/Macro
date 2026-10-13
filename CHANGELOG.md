@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Unreleased
+
+### 추가 (개발 하네스)
+- `scripts/check-invariants.mjs`: 정책(자동 조작/외부 통신/쿠키 접근/HTML 삽입 금지)과 manifest 최소 권한을 정적 검사. 사람/CI/에이전트가 같은 기준을 쓰도록 스크립트로 둠
+- `npm run verify:quick` / `verify` 단계화, `npm run package` 배포 zip (테스트 빌드 거부)
+- `scripts/harness/after-edit.mjs`: 편집 후 tsc + 불변식 검사 hook. 성공 시 무출력으로 컨텍스트 절약
+- 프로젝트 `CLAUDE.md`, `.claude/agents/mv3-reviewer.md`, `.claude/skills/{verify,release}`
+- `.github/workflows/ci.yml`: push/PR마다 `npm test`
+- `npm run dev:browser`: 확장 로드된 Chromium 실행
+
 ## 0.1.0 - 2026-10-13
 
 ### 추가

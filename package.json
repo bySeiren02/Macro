@@ -9,11 +9,15 @@
     "build:test": "node scripts/build.mjs --test",
     "watch": "node scripts/build.mjs --watch",
     "typecheck": "tsc --noEmit",
+    "check:invariants": "node scripts/check-invariants.mjs",
     "serve:test-page": "node scripts/serve-test-page.mjs",
-    "test": "npm run typecheck && npm run build && npm run build:test && playwright test",
+    "dev:browser": "node scripts/launch-dev.mjs",
+    "verify:quick": "npm run typecheck && npm run check:invariants && npm run build && npm run build:test && playwright test --project=unit",
+    "verify": "npm run verify:quick && playwright test --project=e2e",
+    "test": "npm run verify",
     "test:unit": "playwright test --project=unit",
     "test:e2e": "npm run build:test && playwright test --project=e2e",
-    "dev:browser": "node scripts/launch-dev.mjs"
+    "package": "npm run build && node scripts/package.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
