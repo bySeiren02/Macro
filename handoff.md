@@ -2,7 +2,7 @@
 - 프로젝트 버전: 0.1.0 (package.json, manifest는 빌드 시 자동 주입)
 - 1~7단계 완료: 설계, 빌드 체계, 일정/카운트다운, 버튼 감지/알림, 테스트 페이지 + Playwright, 리뷰 반영, README 가이드
 - 전체 테스트 55개 통과 (`npm test`: tsc + dist/dist-test 빌드 + unit 23 + e2e 32)
-- git: https://github.com/bySeiren02/Macro (main, 첫 커밋 1b9621b push 완료)
+- git: https://github.com/bySeiren02/Macro (main, 최신 33483a2). GitHub Actions CI 통과 (ubuntu, npm test 전체)
 
 # 최근 작업
 - 2026-10-13: 최초 구현. code-reviewer WARNING 3건 반영 (프레임 페이지 키 집계, onAdded origin 확인, 등록 정리), security-reviewer PASS (배포 빌드 sourcemap 제거)
@@ -19,7 +19,6 @@
 - 실제 OS 알림 표시/소리는 headless 테스트에서 검증하지 않음 (세션 알림 기록으로만 검증)
 
 # 다음 TODO
-- CI 첫 실행 결과 확인 (GitHub Actions)
-- 실제 Chrome에 dist 로드 후 수동 점검: 권한 대화상자, macOS 알림 표시, 알림음, 알림 클릭 이동
+- 실제 Chrome 수동 점검 (2026-10-16 dist 로드 확인됨): 권한 대화상자, macOS 알림 표시, 알림음, 알림 클릭 이동
 - (선택) 클래스명 기반 비활성 판정 옵션 (예: 사용자 지정 disabled 클래스)
 - (선택) 오픈 시각에 감지 자동 시작 옵션
