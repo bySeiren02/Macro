@@ -81,6 +81,17 @@ export interface InspectResult {
   readonly matchCount: number;
 }
 
+export function findMatchingElement(doc: Document, buttonText: string, mode: MatchMode): Element | null {
+  const target = normalizeText(buttonText);
+  if (!target) return null;
+
+  for (const el of doc.querySelectorAll(CANDIDATE_SELECTOR)) {
+    if (!matchesTarget(el, target, mode) || evaluateElement(el) !== 'enabled') continue;
+    return el;
+  }
+  return null;
+}
+
 /** 일치하는 요소가 여러 개면 가장 진행된 상태(enabled > disabled > hidden)를 대표값으로 사용 */
 export function inspectDocument(doc: Document, buttonText: string, mode: MatchMode): InspectResult {
   const target = normalizeText(buttonText);

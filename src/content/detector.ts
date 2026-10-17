@@ -8,7 +8,7 @@ import { DETECTOR_GLOBAL } from '../shared/constants';
 import { isResponse, type ContentRequest, type HelloReply, type ReportReply } from '../shared/messages';
 import { isRecord } from '../shared/result';
 import type { DetectorConfig } from '../shared/types';
-import { inspectDocument, type InspectResult } from './inspect';
+import { findMatchingElement, inspectDocument, type InspectResult } from './inspect';
 
 interface DetectorHandle {
   stop(): void;
@@ -70,6 +70,7 @@ function createDetector(): DetectorHandle {
     let last: InspectResult | null = null;
     let lastCheckAt = 0;
     let pending: Timer | null = null;
+    let autoClicked = false;
 
     const report = async (result: InspectResult): Promise<void> => {
       const reply = (await send({
@@ -82,6 +83,24 @@ function createDetector(): DetectorHandle {
       if (reply && reply.active === false) stop(); // 세션 만료 = 사용자가 중지함
     };
 
+    const maybeAutoClick = (result: InspectResult): void => {
+      if (result.state !== 'enabled') {
+        autoClicked = false;
+        return;
+      }
+      if (autoClicked) return;
+      const target = findMatchingElement(document, config.buttonText, config.matchMode);
+      if (!target) return;
+      const click = (target as { click?: () => void }).click;
+      if (typeof click !== 'function') return;
+      try {
+        click.call(target);
+        autoClicked = true;
+      } catch {
+        // 일부 사이트는 클릭 자체가 거부되거나 이슈가 있어도 감지는 계속된다.
+      }
+    };
+
     const check = (): void => {
       if (stopped) return;
       lastCheckAt = performance.now();
@@ -89,6 +108,7 @@ function createDetector(): DetectorHandle {
       const changed = !last || last.state !== result.state || last.matchCount !== result.matchCount;
       last = result;
       if (changed) void report(result);
+      maybeAutoClick(result);
     };
 
     // leading-edge 실행 + trailing 1회: 연속 변경 시에도 throttleMs당 최대 1회 탐색

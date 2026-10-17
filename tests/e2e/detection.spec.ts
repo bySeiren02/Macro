@@ -92,6 +92,17 @@ test.describe('예매 버튼 상태 감지', () => {
     await expect(popup.locator('#match-count')).toHaveText('1개');
   });
 
+  test('버튼이 활성화되면 자동으로 클릭해 다음 화면으로 넘어간다', async ({ context, popup }) => {
+    const page = await openTestPage(context, 'disabled');
+    await saveTargetUrl(popup, TEST_PAGE);
+    await startDetection(popup);
+    await expect(buttonState(popup)).toHaveText('비활성화');
+
+    await setTicketState(page, 'enabled');
+    await expect(page.locator('h2', { hasText: '좌석 선택' })).toBeVisible();
+    await expect(buttonState(popup)).toHaveText('찾을 수 없음');
+  });
+
   test('정확히 일치 모드에서는 부분 일치 요소를 무시한다', async ({ context, popup }) => {
     await openTestPage(context, 'enabled');
     await saveTargetUrl(popup, TEST_PAGE);

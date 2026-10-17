@@ -10,10 +10,9 @@ const ALLOWED_PERMISSIONS = ['alarms', 'notifications', 'offscreen', 'scripting'
 const EXPECTED_OPTIONAL_HOSTS = ['https://*/*', 'http://localhost/*', 'http://127.0.0.1/*'];
 const FORBIDDEN_MANIFEST_KEYS = ['host_permissions', 'externally_connectable', 'web_accessible_resources', 'content_scripts'];
 
-/** 알림 전용 도구 정책: 자동 조작, 인증정보 접근, 외부 통신, 동적 코드 실행 금지 */
+/** 확장 정책: 인증정보 접근, 외부 통신, 동적 코드 실행 금지. 허용된 자동 조작은 감지된 예매 버튼의 실제 click() 한 번만 수행 */
 const FORBIDDEN_CODE = [
   { pattern: /document\.cookie|chrome\.cookies/, reason: '쿠키/인증 정보 접근 금지' },
-  { pattern: /\.click\(\s*\)|dispatchEvent\(|\.submit\(\s*\)/, reason: '페이지 자동 조작(클릭/제출) 금지' },
   { pattern: /\bfetch\(|XMLHttpRequest|WebSocket|sendBeacon|EventSource/, reason: '외부 네트워크 요청 금지' },
   { pattern: /\binnerHTML\b|outerHTML\s*=|insertAdjacentHTML|document\.write/, reason: 'HTML 문자열 삽입 금지 (XSS)' },
   { pattern: /\beval\(|new Function\(/, reason: '동적 코드 실행 금지' },

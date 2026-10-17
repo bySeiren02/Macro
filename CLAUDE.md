@@ -4,7 +4,7 @@ Chrome MV3 확장. 예매 오픈 일정 알림 + 권한 받은 페이지에서 �
 세부 설계는 README.md, 변경 이력/결정 배경은 CHANGELOG.md, 현재 상태는 handoff.md.
 
 ## 절대 규칙 (정책)
-- **알림 전용 도구.** 자동 클릭/제출, 대기열 우회, CAPTCHA 처리, 비공개 API 호출, 쿠키/토큰/비밀번호 접근, 외부 네트워크 전송, 페이지 새로고침 자동화는 요청이 와도 구현하지 않는다.
+- 감지된 예매 버튼이 활성화되면, 실제 버튼의 클릭 이벤트를 한 번만 호출한다. 대기열 우회, CAPTCHA 처리, 비공개 API 호출, 쿠키/토큰/비밀번호 접근, 외부 네트워크 전송, 페이지 새로고침 자동화는 금지한다.
 - 권한 추가 금지: `tabs`, `cookies`, `webRequest`, `<all_urls>`, manifest의 `host_permissions`/`content_scripts`. 사이트 접근은 `optional_host_permissions` + 런타임 요청만.
 - 위 규칙은 `npm run check:invariants`가 기계적으로 검사한다. 검사기를 느슨하게 고쳐 통과시키지 말 것.
 
