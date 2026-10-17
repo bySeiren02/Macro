@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>테스트 예매 샌드박스</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>테스트 예매 샌드박스 <small>(127.0.0.1 전용)</small></h1>
+    <p class="session">세션 ID: <code data-testid="session-id"></code></p>
+
+    <section>
+      <h2>1. 좌석 선택</h2>
+      <div class="seat-grid" data-testid="seat-grid"></div>
+    </section>
+
+    <section>
+      <h2>2. 선점 및 확정</h2>
+      <p>선택한 좌석: <strong data-testid="selected-seat">없음</strong></p>
+      <button type="button" data-testid="hold-button" disabled>좌석 선점</button>
+      <button type="button" data-testid="confirm-button" disabled>예매 확정</button>
+    </section>
+
+    <p class="status" data-testid="status-message" role="status" aria-live="polite"></p>
+    <p class="result" data-testid="booking-result" hidden></p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -8,6 +8,10 @@
 - 2026-10-13: 최초 구현. code-reviewer WARNING 3건 반영 (프레임 페이지 키 집계, onAdded origin 확인, 등록 정리), security-reviewer PASS (배포 빌드 sourcemap 제거)
 - 2026-10-13: `npm run dev:browser` 추가 (확장 로드된 Chromium 자동 실행, 프로필은 .dev-profile/)
 
+- 2026-10-17: 이 PC(Windows)에서 `npm ci` + `npx playwright install chromium` + build 후 `npm run dev:browser` 실행 확인 (정상 기동/종료)
+
+- 2026-10-17: 학습용 `sandbox/booking/` 추가 (독립 package.json, Express 로컬 예매 서버 + Playwright 10개 통과, 네트워크 응답 검증 포함). 루트 프로젝트와 무관, 루트 `verify:quick` 통과 유지. 사용법은 `sandbox/booking/README.md`
+
 # 알려진 이슈
 - 권한 요청 경로(chrome.permissions.request 대화상자)는 e2e에서 검증 불가 (dist-test가 로컬 권한을 미리 부여). 수동 확인 필요
 - 다른 출처 iframe / closed Shadow DOM 안의 버튼은 감지 불가 (README에 문서화)

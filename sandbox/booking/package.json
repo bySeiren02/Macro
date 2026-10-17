@@ -1,0 +1,19 @@
+{
+  "name": "booking-sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "description": "로컬 전용(127.0.0.1) 테스트 예매 서버 + Playwright E2E/동시성 테스트 학습용 샌드박스",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed --workers=1",
+    "report": "playwright show-report"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0"
+  }
+}

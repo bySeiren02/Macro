@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### 추가 (학습용 샌드박스) - 2026-10-17
+- `sandbox/booking/`: 127.0.0.1 전용 Express 테스트 예매 서버 + Playwright 테스트 6개 (data-testid 기본 흐름, 동시 선점/멱등 확정/다중 브라우저 세션)
+- 확장과 분리한 독립 패키지로 둠: 확장은 런타임 의존성 0과 "자동 클릭 금지" 불변식을 유지해야 하므로 express 의존성과 클릭 자동화 테스트를 루트에 섞지 않음
+- 좌석 단위 promise-chain 락으로 check-then-write 경쟁 상태 방지. `UNSAFE=1`로 락을 끄면 중복 예매 재현 (5건 동시 -> 5건 모두 201 확인)
+- `tests/local-only.js`가 baseURL이 로컬이 아니면 테스트를 실패시킴
+- 네트워크 검증: API 응답에 비즈니스 상태 `state`(AVAILABLE/HELD/CONFIRMED) 추가(기존 `status`는 UI 호환 위해 유지). `tests/network.spec.js` 4개 + `network-helpers.js`(클릭-응답 동기화, 실패 시 통신 기록 첨부). 확정 재요청 응답에서 sessionId/holdId 노출 제거
+
 ### 추가 (개발 하네스)
 - `scripts/check-invariants.mjs`: 정책(자동 조작/외부 통신/쿠키 접근/HTML 삽입 금지)과 manifest 최소 권한을 정적 검사. 사람/CI/에이전트가 같은 기준을 쓰도록 스크립트로 둠
 - `npm run verify:quick` / `verify` 단계화, `npm run package` 배포 zip (테스트 빌드 거부)
