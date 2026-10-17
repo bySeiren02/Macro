@@ -10,7 +10,7 @@
 
 - 2026-10-17: 이 PC(Windows)에서 `npm ci` + `npx playwright install chromium` + build 후 `npm run dev:browser` 실행 확인 (정상 기동/종료)
 
-- 2026-10-17: 학습용 `sandbox/booking/` 추가 (독립 package.json, Express 로컬 예매 서버 + Playwright 10개 통과, 네트워크 응답 검증 포함). 루트 프로젝트와 무관, 루트 `verify:quick` 통과 유지. 사용법은 `sandbox/booking/README.md`
+- 2026-10-17: 학습용 `sandbox/booking/` 추가 (독립 package.json, Express 로컬 예매 서버 + Playwright 10개 통과, 네트워크 응답 검증 포함, `npm run lab` DB 동시성 실험, 입력 검증 폼 test/strict 모드). 샌드박스 테스트 17개 통과. 루트 프로젝트와 무관, 루트 `verify:quick` 통과 유지. 사용법은 `sandbox/booking/README.md`
 
 # 알려진 이슈
 - 권한 요청 경로(chrome.permissions.request 대화상자)는 e2e에서 검증 불가 (dist-test가 로컬 권한을 미리 부여). 수동 확인 필요

@@ -10,3 +10,5 @@ button[data-testid$="-button"] { padding: 8px 14px; margin-right: 8px; }
 .status { min-height: 1.4em; }
 .status.error { color: #b91c1c; }
 .result { font-weight: 600; color: #15803d; }
+.field-error { color: #b91c1c; font-size: 0.9em; }
+input[aria-invalid="true"] { border-color: #b91c1c; outline-color: #b91c1c; }

@@ -13,6 +13,20 @@ const DB_DELAY_MS = Number(process.env.DB_DELAY_MS ?? 30);
 // 학습용: UNSAFE=1 이면 락 없이 처리해서 경쟁 상태를 직접 재현할 수 있다.
 const UNSAFE = process.env.UNSAFE === '1';
 
+// 입력 검증 모드. 기본값은 strict(안전한 기본값). test 모드에서만 고정 테스트 토큰을 허용한다.
+// 테스트 우회는 "서버 설정"으로만 켜진다. 클라이언트가 우회를 요청할 방법은 없다.
+const VERIFY_MODE = process.env.VERIFY_MODE ?? 'strict';
+const TEST_TOKEN = 'TEST42';
+const MAX_VERIFY_ATTEMPTS = 5;
+if (!['strict', 'test'].includes(VERIFY_MODE)) {
+  console.error(`VERIFY_MODE는 strict 또는 test 여야 합니다: ${VERIFY_MODE}`);
+  process.exit(1);
+}
+if (VERIFY_MODE === 'test' && process.env.NODE_ENV === 'production') {
+  console.error('NODE_ENV=production 에서는 VERIFY_MODE=test 로 시작할 수 없습니다.');
+  process.exit(1);
+}
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ---- 상태 (메모리) ----
@@ -21,6 +35,7 @@ let seats;   // seatId -> { status: 'available' | 'held' | 'sold', holdId?, sess
 let holds;   // holdId -> { seatId, sessionId, expiresAt }
 let bookings; // bookingId -> { seatId, sessionId, holdId }
 let bookingByHold; // holdId -> bookingId (확정 요청 멱등성)
+let verifyAttempts; // sessionId -> 실패 횟수
 
 // API 응답의 비즈니스 상태값. 내부 status와 분리해서 클라이언트/테스트가 이 값으로 판단하게 한다.
 const STATE = { available: 'AVAILABLE', held: 'HELD', sold: 'CONFIRMED' };
@@ -31,6 +46,7 @@ function resetState() {
   holds = new Map();
   bookings = new Map();
   bookingByHold = new Map();
+  verifyAttempts = new Map();
 }
 resetState();
 
@@ -122,6 +138,35 @@ app.post('/api/bookings', async (req, res) => {
   res.status(result.code).json(result.body);
 });
 
+// 입력 폼 검증. 클라이언트 검증은 UX용이고, 판정은 항상 서버가 다시 한다.
+app.get('/api/verify/config', (_req, res) => res.json({ mode: VERIFY_MODE }));
+
+app.post('/api/verify', (req, res) => {
+  const { name, token, sessionId } = req.body ?? {};
+  if (typeof sessionId !== 'string' || !sessionId) return res.status(400).json({ error: 'INVALID_REQUEST' });
+
+  const failures = verifyAttempts.get(sessionId) ?? 0;
+  if (failures >= MAX_VERIFY_ATTEMPTS) return res.status(429).json({ error: 'TOO_MANY_ATTEMPTS' });
+
+  const fieldErrors = {};
+  if (typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 20) fieldErrors.name = 'NAME_LENGTH';
+  if (typeof token !== 'string' || !/^[A-Z0-9]{6}$/.test(token)) fieldErrors.token = 'TOKEN_FORMAT';
+  if (Object.keys(fieldErrors).length) return res.status(400).json({ error: 'VALIDATION_FAILED', fieldErrors });
+
+  // strict 모드: 실제 운영이라면 외부 검증 서비스에 위임할 자리. 로컬 모의 환경에서는 항상 거부한다.
+  const accepted = VERIFY_MODE === 'test' && token === TEST_TOKEN;
+  if (!accepted) {
+    verifyAttempts.set(sessionId, failures + 1);
+    return res.status(422).json({
+      error: 'INVALID_TOKEN',
+      mode: VERIFY_MODE,
+      remainingAttempts: MAX_VERIFY_ATTEMPTS - failures - 1,
+    });
+  }
+  verifyAttempts.delete(sessionId);
+  res.status(200).json({ verified: true, verificationId: `VF-${randomUUID().slice(0, 8).toUpperCase()}`, name: name.trim() });
+});
+
 // 테스트 격리용 초기화 (로컬 서버라서 허용)
 app.post('/api/reset', (_req, res) => {
   resetState();
@@ -129,5 +174,5 @@ app.post('/api/reset', (_req, res) => {
 });
 
 app.listen(PORT, HOST, () => {
-  console.log(`booking sandbox: http://${HOST}:${PORT}  (lock: ${UNSAFE ? 'OFF (UNSAFE)' : 'ON'})`);
+  console.log(`booking sandbox: http://${HOST}:${PORT}  (lock: ${UNSAFE ? 'OFF (UNSAFE)' : 'ON'}, verify: ${VERIFY_MODE})`);
 });

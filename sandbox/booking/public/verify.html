@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>입력 검증 폼 (테스트)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>입력 검증 폼 <small>(127.0.0.1 전용)</small></h1>
+    <p>서버 검증 모드: <code data-testid="verify-mode">...</code></p>
+
+    <section>
+      <form data-testid="verify-form" novalidate>
+        <p>
+          <label for="name">이름</label><br />
+          <input id="name" name="name" data-testid="name-input" required minlength="2" maxlength="20"
+                 aria-describedby="name-error" autocomplete="off" />
+          <br /><span id="name-error" class="field-error" data-testid="name-error"></span>
+        </p>
+        <p>
+          <label for="token">검증 토큰 (대문자/숫자 6자리)</label><br />
+          <input id="token" name="token" data-testid="token-input" required pattern="[A-Z0-9]{6}" maxlength="6"
+                 aria-describedby="token-error" autocomplete="off" />
+          <br /><span id="token-error" class="field-error" data-testid="token-error"></span>
+        </p>
+        <button type="submit" data-testid="verify-submit">제출</button>
+      </form>
+    </section>
+
+    <p class="status" data-testid="verify-status" role="status" aria-live="polite"></p>
+    <p class="result" data-testid="verify-result" hidden></p>
+  </main>
+  <script src="verify.js"></script>
+</body>
+</html>

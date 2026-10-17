@@ -8,6 +8,8 @@
 - 좌석 단위 promise-chain 락으로 check-then-write 경쟁 상태 방지. `UNSAFE=1`로 락을 끄면 중복 예매 재현 (5건 동시 -> 5건 모두 201 확인)
 - `tests/local-only.js`가 baseURL이 로컬이 아니면 테스트를 실패시킴
 - 네트워크 검증: API 응답에 비즈니스 상태 `state`(AVAILABLE/HELD/CONFIRMED) 추가(기존 `status`는 UI 호환 위해 유지). `tests/network.spec.js` 4개 + `network-helpers.js`(클릭-응답 동기화, 실패 시 통신 기록 첨부). 확정 재요청 응답에서 sessionId/holdId 노출 제거
+- `experiments/race-lab.mjs` (`npm run lab`): node:sqlite + worker_threads로 DB 수준 동시 선점 실험. naive/atomic/optimistic/pessimistic/unique 5개 전략 비교. 실측(8워커x20라운드): naive 20/20 중복, 나머지 0/20. 메모리 락(server.js)은 단일 프로세스에서만 유효하다는 한계를 보여주려고 DB 연결 다중화로 구성
+- 입력 검증 폼(`verify.html`, `/api/verify`) + `tests/verify-form.spec.js` 7개. `VERIFY_MODE` 기본 strict, test 모드에서만 고정 토큰 TEST42 허용, `NODE_ENV=production`+test 모드는 기동 거부. 테스트 우회를 클라이언트가 켤 수 없게 서버 설정으로만 둠. 실패 5회 잠금(429). Playwright webServer를 test(4300)/strict(4301) 2개로 구성
 
 ### 추가 (개발 하네스)
 - `scripts/check-invariants.mjs`: 정책(자동 조작/외부 통신/쿠키 접근/HTML 삽입 금지)과 manifest 최소 권한을 정적 검사. 사람/CI/에이전트가 같은 기준을 쓰도록 스크립트로 둠
